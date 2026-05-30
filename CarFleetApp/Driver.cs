@@ -1,9 +1,9 @@
-﻿// Driver.cs
-namespace CarFleetApp.Models
+﻿namespace CarFleetApp.Models
 {
     public class Driver
     {
         public string FullName { get; set; }
-        public decimal SalaryPerTrip { get; set; } // Зарплата за одну поїздку
+        public decimal SalaryPerTrip { get; set; }
+        public string Status { get; set; } = "Вільний";
     }
 }
