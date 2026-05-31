@@ -1,198 +1,280 @@
 ﻿<Window x:Class="CarFleetApp.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Fleet Management Dashboard" 
-        Height="800" Width="1200"
-        UseLayoutRounding="True" 
-        TextOptions.TextFormattingMode="Display"
-        TextOptions.TextRenderingMode="ClearType"
-        MinWidth="1050" MinHeight="700" 
-        WindowStartupLocation="CenterScreen" 
-        Background="#F4F7FE">
+        Title="Fleet Management System" Height="850" Width="1250"
+        MinWidth="1100" MinHeight="800" 
+        UseLayoutRounding="True" TextOptions.TextFormattingMode="Display"
+        WindowStartupLocation="CenterScreen" Background="#F4F7FE"
+        Closing="Window_Closing">
 
-    <Grid Margin="25">
+    <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <!-- Статистика -->
+            <!-- 0: Статистика -->
             <RowDefinition Height="Auto"/>
-            <!-- Таби -->
+            <!-- 1: Навігація -->
             <RowDefinition Height="Auto"/>
-            <!-- Фільтри -->
+            <!-- 2: Панель фільтрів -->
             <RowDefinition Height="*"/>
-            <!-- Список карток -->
+            <!-- 3: Контент -->
         </Grid.RowDefinitions>
 
-        <!-- 1. ВЕРХНІ КАРТКИ СТАТИСТИКИ -->
-        <UniformGrid Rows="1" Columns="4" Margin="0,0,0,25">
-            <!-- Загальний заробіток -->
-            <Border Background="White" CornerRadius="20" Margin="10,0" Padding="20">
-                <Border.Effect>
-                    <DropShadowEffect BlurRadius="15" Direction="270" ShadowDepth="2" Opacity="0.05"/>
-                </Border.Effect>
+        <!-- ROW 0: ВЕРХНІ КАРТКИ -->
+        <UniformGrid Grid.Row="0" Rows="1" Columns="4" Margin="0,0,0,20">
+            <Border Background="White" CornerRadius="15" Margin="10,0" Padding="15">
                 <StackPanel>
-                    <TextBlock Text="ЗАГАЛЬНИЙ ЗАРОБІТОК" FontSize="11" Foreground="#A3AED0" FontWeight="Bold"/>
-                    <StackPanel Orientation="Horizontal" Margin="0,8">
-                        <TextBlock x:Name="txtTotalIncome" Text="7 100" FontSize="28" FontWeight="Bold"  Foreground="#2B3674" RenderOptions.ClearTypeHint="Enabled"/>
-                        <TextBlock Text=" UAH" FontSize="18" VerticalAlignment="Bottom" Margin="5,0,0,4" Foreground="#2B3674"/>
-                    </StackPanel>
+                    <TextBlock Text="ЗАГАЛЬНИЙ ДОХІД" FontSize="10" Foreground="#A3AED0" FontWeight="Bold"/>
+                    <TextBlock x:Name="txtTotalIncome" Text="0 UAH" FontSize="24" FontWeight="Bold" Foreground="#2B3674" Margin="0,5"/>
                 </StackPanel>
             </Border>
-
-            <!-- Поточні витрати -->
-            <Border Background="White" CornerRadius="20" Margin="10,0" Padding="20">
+            <Border Background="White" CornerRadius="15" Margin="10,0" Padding="15">
                 <StackPanel>
-                    <TextBlock Text="ПОТОЧНІ ВИТРАТИ" FontSize="11" Foreground="#A3AED0" FontWeight="Bold"/>
-                    <StackPanel Orientation="Horizontal" Margin="0,8">
-                        <TextBlock x:Name="txtTotalExpenses" Text="3 540" FontSize="28" FontWeight="Bold" Foreground="#2B3674"/>
-                        <TextBlock Text=" UAH" FontSize="18" VerticalAlignment="Bottom" Margin="5,0,0,4" Foreground="#2B3674"/>
-                    </StackPanel>
+                    <TextBlock Text="ВИТРАТИ" FontSize="10" Foreground="#A3AED0" FontWeight="Bold"/>
+                    <TextBlock x:Name="txtTotalExpenses" Text="0 UAH" FontSize="24" FontWeight="Bold" Foreground="#EE5D50" Margin="0,5"/>
                 </StackPanel>
             </Border>
-
-            <!-- Чистий прибуток -->
-            <Border Background="#4318FF" CornerRadius="20" Margin="10,0" Padding="20">
+            <Border Background="#4318FF" CornerRadius="15" Margin="10,0" Padding="15">
                 <StackPanel>
-                    <TextBlock Text="ЧИСТИЙ ПРИБУТОК" FontSize="11" Foreground="#E9EDF7" FontWeight="Bold"/>
-                    <StackPanel Orientation="Horizontal" Margin="0,8">
-                        <TextBlock x:Name="txtTotalProfit" Text="3 560" FontSize="28" FontWeight="Bold" Foreground="White"/>
-                        <TextBlock Text=" UAH" FontSize="18" VerticalAlignment="Bottom" Margin="5,0,0,4" Foreground="White"/>
-                    </StackPanel>
+                    <TextBlock Text="ПРИБУТОК" FontSize="10" Foreground="White" FontWeight="Bold"/>
+                    <TextBlock x:Name="txtTotalProfit" Text="0 UAH" FontSize="24" FontWeight="Bold" Foreground="White" Margin="0,5"/>
                 </StackPanel>
             </Border>
-
-            <!-- Статус БД -->
-            <Border Background="White" CornerRadius="20" Margin="10,0" Padding="20">
+            <Border Background="White" CornerRadius="15" Margin="10,0" Padding="15">
                 <StackPanel>
-                    <TextBlock Text="СТАТУС СХОВИЩА (DB)" FontSize="11" Foreground="#A3AED0" FontWeight="Bold"/>
-                    <StackPanel Orientation="Horizontal" Margin="0,12">
-                        <Ellipse Width="8" Height="8" Fill="#4318FF" Margin="0,0,8,0"/>
-                        <TextBlock Text="SQLite Connected" FontSize="14" FontWeight="Bold" Foreground="#2B3674"/>
-                    </StackPanel>
-                    <Border Background="#F4F7FE" CornerRadius="5" HorizontalAlignment="Left" Padding="8,3">
-                        <TextBlock Text="C# COMPATIBLE" FontSize="10" FontWeight="Bold" Foreground="#4318FF"/>
-                    </Border>
+                    <TextBlock Text="БАЗА ДАНИХ" FontSize="10" Foreground="#A3AED0" FontWeight="Bold"/>
+                    <TextBlock Text="Connected" FontSize="18" FontWeight="Bold" Foreground="#05CD99" Margin="0,5"/>
                 </StackPanel>
             </Border>
         </UniformGrid>
 
-        <!-- 2. НАВІГАЦІЯ (ТАБИ) -->
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10,0,10,20">
-            <Button Content="Флот автомобілів (3)" Background="Transparent" BorderThickness="0,0,0,3" BorderBrush="#4318FF" Foreground="#4318FF" FontWeight="Bold" Padding="10,5" Margin="0,0,20,0"/>
-            <Button Content="Реєстр водіїв (2)" Background="Transparent" BorderThickness="0" Foreground="#A3AED0" FontWeight="Bold" Padding="10,5" Margin="0,0,20,0"/>
-            <Button Content="Історія поїздок (2)" Background="Transparent" BorderThickness="0" Foreground="#A3AED0" FontWeight="Bold" Padding="10,5"/>
+        <!-- ROW 1: НАВІГАЦІЯ -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10,0,10,15">
+            <Button x:Name="btnTabVehicles" Content="Флот автомобілів" Click="TabVehicles_Click" Background="Transparent" BorderThickness="0,0,0,3" BorderBrush="#4318FF" Foreground="#4318FF" FontWeight="Bold" Padding="10,5" Margin="0,0,20,0"/>
+            <Button x:Name="btnTabDrivers" Content="Реєстр водіїв" Click="TabDrivers_Click" Background="Transparent" BorderThickness="0" Foreground="#A3AED0" FontWeight="Bold" Padding="10,5" Margin="0,0,20,0"/>
+            <Button x:Name="btnTabTrips" Content="Історія поїздок" Click="TabTrips_Click" Background="Transparent" BorderThickness="0" Foreground="#A3AED0" FontWeight="Bold" Padding="10,5"/>
         </StackPanel>
 
-        <!-- 3. ФІЛЬТРИ ТА ПОШУК -->
-        <Border Grid.Row="2" Background="White" CornerRadius="18" Padding="15" Margin="10,0,10,20">
+        <!-- ROW 2: ГЛОБАЛЬНІ ФІЛЬТРИ (ДЛЯ АВТОПАРКУ) -->
+        <Border Grid.Row="2" Background="White" CornerRadius="15" Padding="15" Margin="10,0,10,15">
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" MinWidth="200"/>
-                    <!-- Пошук -->
+                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
-                    <!-- Класи ТЗ -->
                     <ColumnDefinition Width="Auto"/>
-                    <!-- Чекбокс -->
                     <ColumnDefinition Width="Auto"/>
-                    <!-- Сортування -->
                     <ColumnDefinition Width="Auto"/>
-                    <!-- Кнопка Додати -->
                 </Grid.ColumnDefinitions>
-
-                <!-- 1. Пошук -->
-                <TextBox Grid.Column="0" Padding="12,10" Background="#F4F7FE" BorderThickness="0" VerticalContentAlignment="Center">
-                    <TextBox.Resources>
-                        <Style TargetType="Border">
-                            <Setter Property="CornerRadius" Value="10"/>
-                        </Style>
-                    </TextBox.Resources>
-                </TextBox>
-
-                <!-- 2. Комбобокс -->
-                <ComboBox Grid.Column="1" Width="140" Margin="15,0,0,0" Padding="10" Background="#F4F7FE" BorderThickness="0" SelectedIndex="0" VerticalContentAlignment="Center">
-                    <ComboBoxItem Content="Всі класи ТЗ"/>
+                <TextBox x:Name="txtSearch" TextChanged="txtSearch_TextChanged" Tag="Пошук..." Padding="10" Background="#F4F7FE" BorderThickness="0"/>
+                <ComboBox x:Name="cmbTypeFilter" Grid.Column="1" SelectionChanged="Filter_Changed" Width="120" Margin="10,0" Background="#F4F7FE" BorderThickness="0" SelectedIndex="0">
+                    <ComboBoxItem Content="Всі типи"/>
+                    <ComboBoxItem Content="CAR"/>
+                    <ComboBoxItem Content="VAN"/>
+                    <ComboBoxItem Content="TRUCK"/>
                 </ComboBox>
-
-                <!-- 3. Чекбокс -->
-                <CheckBox Grid.Column="2" Content="Тільки доступні" VerticalAlignment="Center" Margin="20,0"/>
-
-                <!-- 4. Сортування -->
-                <Button Grid.Column="3" Content="⇅ Сортувати" Background="#F4F7FE" Foreground="#2B3674" BorderThickness="0" Padding="15,5" Margin="5,0,10,0">
-                    <Button.Resources>
-                        <Style TargetType="Border">
-                            <Setter Property="CornerRadius" Value="8"/>
-                        </Style>
-                    </Button.Resources>
+                <CheckBox x:Name="chkAvailableOnly" Grid.Column="2" Click="Filter_Changed" Content="Доступні" VerticalAlignment="Center" Margin="10,0"/>
+                <Button Grid.Column="3" Content="⇅ Сортувати" Click="btnSort_Click" Padding="15,5" Background="#F4F7FE" BorderThickness="0" Margin="0,0,10,0">
+                    <Button.ContextMenu>
+                        <ContextMenu>
+                            <MenuItem Header="За моделлю" Tag="Model" Click="Sort_Click"/>
+                            <MenuItem Header="За ціною" Tag="Cost" Click="Sort_Click"/>
+                        </ContextMenu>
+                    </Button.ContextMenu>
                 </Button>
-
-                <!-- 5. Кнопка Додати ТЗ -->
-                <Button Grid.Column="4" Content="+ Додати ТЗ" Background="#4318FF" Foreground="White" FontWeight="Bold" Padding="25,12" BorderThickness="0">
-                    <Button.Resources>
-                        <Style TargetType="Border">
-                            <Setter Property="CornerRadius" Value="12"/>
-                        </Style>
-                    </Button.Resources>
-                </Button>
+                <Button Grid.Column="4" Content="+ Додати ТЗ" Click="AddVehicle_Click" Background="#4318FF" Foreground="White" Padding="20,10" BorderThickness="0"/>
             </Grid>
         </Border>
 
-        <!-- 4. СПИСОК КАРТОК АВТОМОБІЛІВ -->
-        <ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto">
-            <ItemsControl x:Name="icVehicles">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal" HorizontalAlignment="Center"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
+        <!-- ROW 3: ВКЛАДКИ -->
+        <TabControl Grid.Row="3" Background="Transparent" BorderThickness="0">
+            <TabControl.Resources>
+                <Style TargetType="TabItem">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </Style>
+            </TabControl.Resources>
 
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <Border Width="320" Background="White" CornerRadius="20" Margin="10" Padding="20">
-                            <Border.Effect>
-                                <DropShadowEffect BlurRadius="15" Direction="270" ShadowDepth="2" Opacity="0.03"/>
-                            </Border.Effect>
-                            <StackPanel>
-                                <!-- Header: Type & Status -->
-                                <Grid Margin="0,0,0,15">
-                                    <Border Background="#F4F7FE" HorizontalAlignment="Left" Padding="10,4" CornerRadius="6">
-                                        <TextBlock Text="{Binding VehicleType}" FontSize="10" FontWeight="Bold" Foreground="#A3AED0"/>
-                                    </Border>
-                                    <Border Background="#E6FAF5" HorizontalAlignment="Right" Padding="10,4" CornerRadius="6">
-                                        <TextBlock Text="ДОСТУПНИЙ" FontSize="10" FontWeight="Bold" Foreground="#05CD99"/>
-                                    </Border>
-                                </Grid>
-
-                                <!-- Model & Plate -->
-                                <TextBlock Text="{Binding Model}" FontSize="20" FontWeight="Bold" Foreground="#2B3674"/>
-                                <TextBlock Text="{Binding PlateNumber}" FontSize="14" Foreground="#A3AED0" Margin="0,2,0,15"/>
-
-                                <Separator Background="#F4F7FE" Margin="0,0,0,15"/>
-
-                                <!-- Specs Grid -->
-                                <UniformGrid Columns="2" Margin="0,0,0,15">
-                                    <StackPanel>
-                                        <TextBlock Text="Витрата:" FontSize="11" Foreground="#A3AED0"/>
-                                        <TextBlock Text="{Binding FuelConsumption, StringFormat={}{0}L / 100km}" FontWeight="Bold" Foreground="#2B3674"/>
-                                    </StackPanel>
-                                    <StackPanel>
-                                        <TextBlock Text="Амортизація:" FontSize="11" Foreground="#A3AED0" HorizontalAlignment="Right"/>
-                                        <TextBlock Text="{Binding AmortizationPerKm, StringFormat={}{0} UAH/km}" FontWeight="Bold" Foreground="#2B3674" HorizontalAlignment="Right"/>
-                                    </StackPanel>
-                                </UniformGrid>
-
-                                <!-- Capacity Info -->
-                                <TextBlock Text="Поліморфна ємність:" FontSize="11" Foreground="#A3AED0"/>
-                                <TextBlock Text="{Binding CapacityInfo}" FontWeight="Bold" Foreground="#4318FF" Margin="0,2,0,15"/>
-
-                                <Separator Background="#F4F7FE" Margin="0,0,0,15"/>
-
-                                <!-- Bottom Info -->
-                                <TextBlock Text="Собівартість км:" FontSize="11" Foreground="#A3AED0"/>
-                                <TextBlock Text="{Binding CostPerKm, StringFormat={}{0:N0} UAH/km}" FontSize="18" FontWeight="Bold" Foreground="#2B3674"/>
+            <!-- TAB 1: АВТОПАРК -->
+            <TabItem x:Name="tabVehicles" IsSelected="True">
+                <DockPanel>
+                    <Border x:Name="brdAddVehicle" DockPanel.Dock="Top" Visibility="Collapsed" Background="White" CornerRadius="15" Padding="20" Margin="10,0,10,15">
+                        <StackPanel>
+                            <TextBlock x:Name="lblConstructorTitle" Text="Конструктор ТЗ" FontWeight="Bold" Margin="0,0,0,10"/>
+                            <UniformGrid Columns="4">
+                                <TextBox x:Name="txtNewBrand" Tag="Бренд" Margin="5" Padding="8"/>
+                                <TextBox x:Name="txtNewModel" Tag="Модель" Margin="5" Padding="8"/>
+                                <TextBox x:Name="txtNewPlate" Tag="Номер" Margin="5" Padding="8"/>
+                                <ComboBox x:Name="cmbNewType" Margin="5" SelectedIndex="0">
+                                    <ComboBoxItem Content="Car"/>
+                                    <ComboBoxItem Content="Van"/>
+                                    <ComboBoxItem Content="Truck"/>
+                                </ComboBox>
+                                <TextBox x:Name="txtNewFuel" Tag="Витрата" Margin="5" Padding="8" Text="8.0"/>
+                                <TextBox x:Name="txtNewAmort" Tag="Аморт" Margin="5" Padding="8" Text="2.0"/>
+                                <TextBox x:Name="txtNewPrice" Tag="Ціна" Margin="5" Padding="8" Text="20"/>
+                                <TextBox x:Name="txtNewCapacity" Tag="Місткість" Margin="5" Padding="8" Text="5"/>
+                                <CheckBox x:Name="chkNewIsAvailable" Content="Доступний" IsChecked="True" VerticalAlignment="Center" Margin="5"/>
+                            </UniformGrid>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+                                <Button Content="Скасувати" Click="CancelAdd_Click" Background="Transparent" Margin="0,0,10,0"/>
+                                <Button x:Name="btnSaveVehicle" Content="Зберегти ТЗ" Click="CreateVehicle_Click" Background="#4318FF" Foreground="White" Padding="20,8"/>
                             </StackPanel>
-                        </Border>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </ScrollViewer>
+                        </StackPanel>
+                    </Border>
+                    <ScrollViewer>
+                        <ItemsControl x:Name="icVehicles">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Width="280" Background="White" CornerRadius="15" Margin="10" Padding="15">
+                                        <StackPanel>
+                                            <Grid>
+                                                <TextBlock Text="{Binding VehicleType}" Foreground="#A3AED0" FontSize="10" FontWeight="Bold"/>
+                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                                    <Button Content="✏️" Click="EditVehicle_Click" Tag="{Binding}" Background="Transparent" BorderThickness="0" Margin="0,0,5,0"/>
+                                                    <Button Content="🗑️" Click="DeleteVehicle_Click" Tag="{Binding}" Background="Transparent" BorderThickness="0"/>
+                                                </StackPanel>
+                                            </Grid>
+                                            <TextBlock Text="{Binding Model}" FontSize="18" FontWeight="Bold" Margin="0,5"/>
+                                            <TextBlock Text="{Binding PlateNumber}" Foreground="#A3AED0" Margin="0,0,0,10"/>
+                                            <TextBlock Text="{Binding CapacityInfo}" Foreground="#4318FF" FontWeight="Bold"/>
+                                            <Separator Margin="0,10"/>
+                                            <TextBlock Text="{Binding CostPerKm, StringFormat='{}{0:N2} UAH/km'}" FontSize="16" FontWeight="Bold"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </DockPanel>
+            </TabItem>
+
+            <!-- TAB 2: ВОДІЇ -->
+            <TabItem x:Name="tabDrivers">
+                <DockPanel>
+                    <Border x:Name="brdAddDriver" DockPanel.Dock="Top" Visibility="Collapsed" Background="White" CornerRadius="15" Padding="20" Margin="10,0,10,15">
+                        <StackPanel>
+                            <TextBlock x:Name="lblDriverTitle" Text="Конструктор кадрів" FontWeight="Bold" Margin="0,0,0,10"/>
+                            <UniformGrid Columns="3">
+                                <TextBox x:Name="txtDriverName" Margin="5" Padding="8"/>
+                                <TextBox x:Name="txtDriverLicense" Margin="5" Padding="8"/>
+                                <TextBox x:Name="txtDriverExp" Margin="5" Padding="8"/>
+                                <ComboBox x:Name="cmbDriverSpec" Margin="5" SelectedIndex="0">
+                                    <ComboBoxItem Content="CAR"/>
+                                    <ComboBoxItem Content="VAN"/>
+                                    <ComboBoxItem Content="TRUCK"/>
+                                </ComboBox>
+                                <TextBox x:Name="txtDriverSalary" Margin="5" Padding="8"/>
+                            </UniformGrid>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+                                <Button Content="Скасувати" Click="CancelDriverAdd_Click" Margin="0,0,10,0"/>
+                                <Button x:Name="btnSaveDriver" Content="Додати водія" Click="CreateDriver_Click" Background="#4318FF" Foreground="White" Padding="20,8"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                    <Border DockPanel.Dock="Top" Background="White" CornerRadius="15" Padding="15" Margin="10,0,10,10">
+                        <Grid>
+                            <TextBlock x:Name="txtDriversCount" Text="Водіїв: 0" VerticalAlignment="Center"/>
+                            <Button Content="+ Найняти" Click="HireDriver_Click" HorizontalAlignment="Right" Background="#4318FF" Foreground="White" Padding="15,5"/>
+                        </Grid>
+                    </Border>
+                    <ScrollViewer>
+                        <ItemsControl x:Name="icDrivers">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <WrapPanel/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Width="350" Background="White" CornerRadius="15" Margin="10" Padding="15">
+                                        <Grid>
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding FullName}" FontSize="16" FontWeight="Bold"/>
+                                                <TextBlock Text="{Binding Specialization, StringFormat='Спец: {0}'}" Foreground="#4318FF"/>
+                                                <TextBlock Text="{Binding ExperienceYears, StringFormat='Стаж: {0} років'}" Foreground="#A3AED0"/>
+                                            </StackPanel>
+                                            <StackPanel HorizontalAlignment="Right">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Button Content="✏️" Click="EditDriver_Click" Tag="{Binding}" Background="Transparent" BorderThickness="0"/>
+                                                    <Button Content="🗑️" Click="DeleteDriver_Click" Tag="{Binding}" Background="Transparent" BorderThickness="0"/>
+                                                </StackPanel>
+                                                <TextBlock Text="{Binding SalaryPerTrip, StringFormat='{} {0} UAH'}" FontWeight="Bold" Margin="0,10,0,0"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </DockPanel>
+            </TabItem>
+
+            <!-- TAB 3: ПОЇЗДКИ -->
+            <TabItem x:Name="tabTrips">
+                <DockPanel>
+                    <Border x:Name="brdTripForm" DockPanel.Dock="Top" Visibility="Collapsed" Background="White" CornerRadius="15" Padding="20" Margin="10,0,10,15">
+                        <StackPanel>
+                            <UniformGrid Columns="3">
+                                <ComboBox x:Name="cmbTripVehicle" SelectionChanged="cmbTripVehicle_SelectionChanged" Margin="5"/>
+                                <ComboBox x:Name="cmbTripDriver" Margin="5"/>
+                                <TextBox x:Name="txtTripRoute" Margin="5" Padding="8"/>
+                                <TextBox x:Name="txtTripDist" Margin="5" Padding="8" Text="100"/>
+                                <TextBox x:Name="txtTripIncome" Margin="5" Padding="8" Text="2000"/>
+                            </UniformGrid>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10">
+                                <Button Content="Скасувати" Click="CancelTrip_Click" Margin="0,0,10,0"/>
+                                <Button Content="Викликати та зберегти" Click="SaveTrip_Click" Background="#4318FF" Foreground="White" Padding="20,8"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+                    <Border DockPanel.Dock="Top" Background="White" CornerRadius="15" Padding="15" Margin="10,0,10,10">
+                        <Grid>
+                            <TextBlock Text="Історія поїздок"/>
+                            <Button Content="+ Нова поїздка" Click="OpenTripForm_Click" HorizontalAlignment="Right" Background="#4318FF" Foreground="White" Padding="15,5"/>
+                        </Grid>
+                    </Border>
+                    <ScrollViewer>
+                        <ItemsControl x:Name="icTripsLog">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="White" Margin="10,5" Padding="15" CornerRadius="10">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="100"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="150"/>
+                                                <ColumnDefinition Width="120"/>
+                                                <ColumnDefinition Width="120"/>
+                                                <ColumnDefinition Width="40"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="{Binding TripId}" FontWeight="Bold"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding Route}"/>
+                                            <TextBlock Grid.Column="2" Text="{Binding Vehicle.Model}" Foreground="#A3AED0"/>
+                                            <TextBlock Grid.Column="3" Text="{Binding ClientPayment, StringFormat='+{0} UAH'}" Foreground="Green" HorizontalAlignment="Right"/>
+                                            <TextBlock Grid.Column="4" Text="{Binding NetProfit, StringFormat='{} {0}:+ #,##0 UAH;- #,##0 UAH;0 UAH}'}" FontWeight="Bold" HorizontalAlignment="Right">
+                                                <TextBlock.Style>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter Property="Foreground" Value="Green"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding IsNegative}" Value="True">
+                                                                <Setter Property="Foreground" Value="Red"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </TextBlock.Style>
+                                            </TextBlock>
+                                            <Button Grid.Column="5" Content="🗑️" Click="DeleteTrip_Click" Tag="{Binding}" Background="Transparent" BorderThickness="0"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                </DockPanel>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>

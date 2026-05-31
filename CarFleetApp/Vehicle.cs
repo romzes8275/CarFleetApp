@@ -1,9 +1,15 @@
 ﻿using System;
+using System.Text.Json.Serialization;
 
 namespace CarFleetApp.Models
 {
+    [JsonPolymorphic(TypeDiscriminatorPropertyName = "$type")]
+    [JsonDerivedType(typeof(Car), "car")]
+    [JsonDerivedType(typeof(Van), "van")]
+    [JsonDerivedType(typeof(Truck), "truck")]
     public abstract class Vehicle
     {
+        public string Brand { get; set; }
         public string PlateNumber { get; set; }
         public string Model { get; set; }
         public double FuelConsumption { get; set; } // л/100км
@@ -16,8 +22,8 @@ namespace CarFleetApp.Models
         public abstract string CapacityInfo { get; } // Поліморфна ємність
 
         // Розрахунок собівартості 1 км (Пальне + Амортизація)
-        // Припустимо, середня ціна пального 52 грн/л
-        public decimal CostPerKm => (decimal)((FuelConsumption / 100) * 52) + AmortizationPerKm;
+        // Припустимо, середня ціна пального 73 грн/л
+        public decimal CostPerKm => (decimal)((FuelConsumption / 100) * 73) + AmortizationPerKm;
 
         public decimal CalculateFuelCost(double distance, decimal fuelPrice)
         {

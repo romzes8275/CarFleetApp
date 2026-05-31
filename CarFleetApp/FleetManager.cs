@@ -1,16 +1,18 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using CarFleetApp.Models;
+
 namespace CarFleetApp.Logic
 {
     public class FleetManager
     {
-        public List<Vehicle> Vehicles { get; set; } = new List<Vehicle>();
-        public List<Driver> Drivers { get; set; } = new List<Driver>();
-        public List<Trip> Trips { get; set; } = new List<Trip>();
+        public ObservableCollection<Vehicle> Vehicles { get; set; } = new ObservableCollection<Vehicle>();
+        public ObservableCollection<Driver> Drivers { get; set; } = new ObservableCollection<Driver>();
+        public ObservableCollection<Trip> Trips { get; set; } = new ObservableCollection<Trip>();
 
-    // 1. Пошук доступних машин (стор. 39 методички)
-    public List<Vehicle> GetAvailableVehicles()
+        // 1. Пошук доступних машин (стор. 39 методички)
+        public List<Vehicle> GetAvailableVehicles()
         {
             return Vehicles.Where(v => v.IsAvailable).ToList();
         }
@@ -27,7 +29,7 @@ namespace CarFleetApp.Logic
             return new FinancialReport
             {
                 TotalIncome = Trips.Sum(t => t.ClientPayment),
-                TotalExpenses = Trips.Sum(t => t.CurrentExpenses),
+                TotalExpenses = Trips.Sum(t => t.TotalExpenses),
                 TotalNetProfit = Trips.Sum(t => t.NetProfit)
             };
         }
